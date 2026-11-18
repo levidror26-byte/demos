@@ -37,7 +37,7 @@ a{color:inherit}
 .ready .curtain{clip-path:inset(50% 0 50% 0);visibility:hidden}
 .ci{text-align:center;transition:opacity .5s,transform 1.2s cubic-bezier(.76,0,.24,1)}
 .ready .ci{opacity:0;transform:scale(.96)}
-.cw{font-family:'Italiana',Georgia,serif;font-size:clamp(64px,13vw,150px);line-height:.9;margin:0;letter-spacing:.01em;white-space:nowrap}
+.cw{direction:ltr;font-family:'Italiana',Georgia,serif;font-size:clamp(64px,13vw,150px);line-height:.9;margin:0;letter-spacing:.01em;white-space:nowrap}
 .cw span{display:inline-block;opacity:0;transform:translateY(40%);filter:blur(8px);animation:rise 1.3s cubic-bezier(.2,.7,.2,1) forwards}
 .cw span:nth-child(2){animation-delay:.12s}.cw span:nth-child(3){animation-delay:.24s}.cw span:nth-child(4){animation-delay:.36s}.cw span:nth-child(5){animation-delay:.48s}
 @keyframes rise{to{opacity:1;transform:none;filter:none}}
@@ -65,8 +65,7 @@ html[lang="he"] .nav .lang{font-family:'Hanken Grotesk',sans-serif}
 .clock{position:fixed;z-index:9;right:clamp(16px,4vw,44px);bottom:calc(22px + env(safe-area-inset-bottom));color:#fff;text-align:right;line-height:1.1;text-shadow:0 1px 16px rgba(8,18,28,.5);pointer-events:none;transition:opacity .4s}
 .clock span{display:block;font-size:13px;opacity:.85}
 .clock time{font-family:'Italiana',Georgia,serif;font-size:34px;font-variant-numeric:tabular-nums}
-.clock.hide,.plan.hide,.sound.hide{opacity:0;pointer-events:none}
-.sound{transition:background .25s,opacity .5s}
+.clock.hide,.plan.hide{opacity:0}
 .progress{position:fixed;z-index:9;left:clamp(16px,4vw,44px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;list-style:none;margin:0;padding:0}
 .progress a{display:block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.45);transition:transform .3s,background .3s}
 .progress a.on{background:#fff;transform:scale(1.6)}
@@ -118,19 +117,15 @@ html[lang="he"] .plan text{font-size:8px}
 .hs-card button{position:absolute;top:6px;right:6px;width:40px;height:40px;border:0;background:none;font-size:22px;line-height:1;color:var(--ink);cursor:pointer;border-radius:50%}
 [dir="rtl"] .hs-card button{right:auto;left:6px}
 
-/* Sound */
-.sound{position:fixed;z-index:9;left:clamp(16px,4vw,44px);bottom:calc(22px + env(safe-area-inset-bottom));display:inline-flex;align-items:center;gap:10px;
-  min-height:44px;padding:0 16px 0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.22);color:#fff;font:500 14px/1 var(--text);cursor:pointer;
-  background:rgba(10,22,32,.3);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:background .25s}
-.sound:hover{background:rgba(10,22,32,.5)}
+/* Sound (in the nav) */
+.nav .sound{min-width:44px;justify-content:center;gap:6px;padding:0 12px}
 .sound .spk .w1,.sound .spk .w2{display:none}.sound[aria-pressed="true"] .spk .w1,.sound[aria-pressed="true"] .spk .w2{display:inline}.sound[aria-pressed="true"] .spk .x{display:none}
-.sound .eq{display:none;align-items:flex-end;gap:2px;height:14px}
-.sound .eq b{width:2px;height:3px;background:currentColor;border-radius:1px;transition:height .3s}
+.sound .eq{display:none;align-items:flex-end;gap:2px;height:12px}
 .sound[aria-pressed="true"] .eq{display:flex}
+.sound .eq b{width:2px;height:3px;background:currentColor;border-radius:1px}
 .sound[aria-pressed="true"] .eq b{animation:eq 1.1s ease-in-out infinite alternate}
 .sound .eq b:nth-child(2){animation-delay:-.4s}.sound .eq b:nth-child(3){animation-delay:-.8s}.sound .eq b:nth-child(4){animation-delay:-.2s}
-@keyframes eq{0%{height:3px}50%{height:14px}100%{height:6px}}
-[dir="rtl"] .sound{left:auto;right:clamp(16px,4vw,44px)}
+@keyframes eq{0%{height:3px}50%{height:12px}100%{height:5px}}
 [dir="rtl"] .clock{right:auto;left:clamp(16px,4vw,44px);text-align:left}
 [dir="rtl"] .plan{right:auto;left:clamp(16px,4vw,44px)}
 [dir="rtl"] .progress{left:auto;right:clamp(16px,4vw,44px)}
@@ -211,7 +206,9 @@ legend{font-size:15px;font-weight:500;margin-bottom:6px;padding:0}
 @media (max-width:760px){
   body{font-size:16px}
   .nav a:not(.cta){display:none}
-  .nav a,.nav button{padding:0 12px}
+  .nav a,.nav button{padding:0 11px}
+  .nav .sound{padding:0 10px;min-width:40px}
+  .sound .eq{display:none !important}
   .brand{font-size:26px}
   .progress{display:none}
   .clock{right:auto;left:18px;bottom:auto;top:calc(64px + env(safe-area-inset-top));text-align:left}
@@ -222,9 +219,6 @@ legend{font-size:15px;font-weight:500;margin-bottom:6px;padding:0}
   .plan text{display:none}
   .plan-head{font-size:10px;margin-bottom:4px}
   .plan-head span{display:none}
-  .sound{bottom:auto;top:calc(186px + env(safe-area-inset-top));left:auto;right:14px;min-height:40px;padding:0 12px}
-  [dir="rtl"] .sound{right:auto;left:14px}
-  .sound .lbl{display:none}
   .hs .tag{display:none}
   .hero{justify-content:flex-end;gap:28px}
   .hero .wordmark{position:absolute;left:0;right:0;top:calc(128px + env(safe-area-inset-top));font-size:31vw}
@@ -273,6 +267,9 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
   <nav class="nav" data-ta="nav" aria-label="Navigation principale">
     <a href="#villa" data-t="navVilla">La villa</a>
     <a href="#cote" data-t="navCote">La côte</a>
+    <button type="button" class="sound" id="soundBtn" aria-pressed="false">
+  <svg class="spk" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="w1" d="M16 9.5a3.5 3.5 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="w2" d="M18.5 7a7 7 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="x" d="M16.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="eq" aria-hidden="true"><b></b><b></b><b></b><b></b></span>
+</button>
     <button type="button" class="lang" id="langBtn" lang="he" aria-label="עברית">עב</button>
     <a class="cta" href="#visite" data-t="navVisit">Visiter</a>
   </nav>
@@ -317,9 +314,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
   </svg>
 </aside>
 
-<button type="button" class="sound" id="soundBtn" aria-pressed="false">
-  <svg class="spk" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="w1" d="M16 9.5a3.5 3.5 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="w2" d="M18.5 7a7 7 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="x" d="M16.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="eq" aria-hidden="true"><b></b><b></b><b></b><b></b></span><span class="lbl" data-t="sound">Son</span>
-</button>
+
 <div class="clock" id="clockWrap" aria-hidden="true"><span data-t="clockCity">Césarée</span><time id="clock">16:05</time></div>
 
 <main>
@@ -697,7 +692,7 @@ function updateHotspots(f){
 /* ---------- Ambient sound, generated live: sea outside, softer music inside ---------- */
 const soundBtn = $('#soundBtn');
 let ac = null, master = null, waveGain = null, waveLP = null, padGain = null, soundOn = false, bellTimer = 0, swellTimer = 0;
-function updateSoundLabel(){ soundBtn.setAttribute('aria-label', soundOn ? L.soundOn : L.soundOff); }
+function updateSoundLabel(){ const v = soundOn ? L.soundOn : L.soundOff; soundBtn.setAttribute('aria-label', v); soundBtn.title = v; }
 function buildAudio(){
   ac = new (window.AudioContext || window.webkitAudioContext)();
   master = ac.createGain(); master.gain.value = 0;
@@ -778,7 +773,6 @@ function frame(t){
   const atVisit = sections[ai].id === 'visite' || sections[ai].id === 'cote';
   clockWrap.classList.toggle('hide', sections[ai].id === 'visite');
   plan.classList.toggle('hide', atVisit || (MOBILE && ai === 0));
-  soundBtn.classList.toggle('hide', MOBILE && ai === 0 && !soundOn);
   document.body.classList.toggle('night', cur > 600);
   requestAnimationFrame(frame);
 }
