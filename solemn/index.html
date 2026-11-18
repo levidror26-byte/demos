@@ -288,12 +288,14 @@ function rewind(v){
 /* plays until the camera reaches the shoe (end of the first half), then holds that frame */
 function playToMid(v){
   return new Promise(res=>{
-    const mid = (v.duration || 8) / 2 - 0.03;
+    const half = (v.duration || 8) / 2;
+    const hold = half - 1/24;              /* last frame of the push-in */
+    const stop = ()=>{ v.pause(); v.currentTime = hold; once(v, "seeked").then(res); };
     if(v.requestVideoFrameCallback){
-      const tick = (now, meta)=>{ if(meta.mediaTime >= mid){ v.pause(); res(); } else v.requestVideoFrameCallback(tick); };
+      const tick = (now, meta)=>{ if(meta.mediaTime >= half - 0.3) stop(); else v.requestVideoFrameCallback(tick); };
       v.requestVideoFrameCallback(tick);
     } else {
-      const t = setInterval(()=>{ if(v.currentTime >= mid){ clearInterval(t); v.pause(); res(); } }, 15);
+      const t = setInterval(()=>{ if(v.currentTime >= half - 0.3){ clearInterval(t); stop(); } }, 15);
     }
   });
 }
