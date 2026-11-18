@@ -226,15 +226,15 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
   </section>
 
-  <section class="sec" id="soir" data-f="725" data-time="1035" data-night="1">
+  <section class="sec" id="soir" data-f="640" data-time="1035" data-night="1">
     <div class="panel">
-      <h2>Le soir, la maison s'allume pièce par pièce.</h2>
-      <p>Lumières, volets et chauffage du bassin se pilotent depuis votre téléphone.</p>
+      <h2>Le soir, le soleil se couche face à la terrasse.</h2>
+      <p>Plein ouest, au bord de la falaise : la suite s'ouvre en grand sur la mer. Lumières, volets et chauffage du bassin se pilotent depuis votre téléphone.</p>
       <p>On fait visiter jusqu'à 22 h, pour que vous voyiez la maison telle que vous y vivrez.</p>
     </div>
   </section>
 
-  <section class="sec" id="cote" data-f="746" data-time="1075" data-night="1">
+  <section class="sec" id="cote" data-f="688" data-time="1075" data-night="1">
     <div class="panel">
       <h2>Quatre maisons sur la côte en ce moment.</h2>
       <p>De Césarée à Herzliya Pituah. Choisissez une ville pour voir la maison.</p>
@@ -243,7 +243,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
   </section>
 
-  <section class="sec visit" id="visite" data-f="746" data-time="1085" data-night="1">
+  <section class="sec visit" id="visite" data-f="688" data-time="1085" data-night="1">
     <div class="panel">
       <h2>Visiter une maison</h2>
       <p>Laissez votre numéro, un conseiller francophone vous rappelle dans la journée pour caler la visite.</p>
@@ -313,7 +313,7 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const sections = [...document.querySelectorAll('main > section')];
 const canvas = document.getElementById('tour'), ctx = canvas.getContext('2d');
 const MOBILE = innerWidth <= 760 || matchMedia('(pointer: coarse)').matches;
-const N = 747;
+const N = 689;
 let CUM = null; // cumulative camera motion per frame: equal scroll = equal movement
 const DEV = MOBILE ? 'm' : 'd';
 const frames = new Array(N); let loadedCount = 0;
@@ -397,7 +397,7 @@ function frame(t){
   const m = Math.round(at(y + vh*0.3, 'time'));
   if (m !== shownMin){ shownMin = m; clockEl.textContent = `${Math.floor(m/60)}:${String(m%60).padStart(2,'0')}`; }
   clockWrap.classList.toggle('hide', sections[ai].id === 'visite');
-  document.body.classList.toggle('night', cur > 690);
+  document.body.classList.toggle('night', cur > 600);
   requestAnimationFrame(frame);
 }
 // smooth, inertial scrolling on desktop (native scrolling stays on touch screens)
