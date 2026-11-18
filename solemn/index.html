@@ -145,6 +145,57 @@ h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1px rgba(241,236,2
   .notify input{flex:none;width:100%}
 }
 
+/* Bag drawer */
+.bag{cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit}
+.scrim{position:fixed;inset:0;z-index:90;background:rgba(5,4,4,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .35s}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;z-index:91;width:min(420px,100%);display:flex;flex-direction:column;background:#141110;border-left:1px solid var(--line);
+  transform:translateX(102%);transition:transform .5s var(--ease)}
+.drawer.open{transform:none}
+.d-head{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}
+.d-head h2{font-weight:850;font-stretch:66%;font-size:28px;text-transform:uppercase;line-height:1}
+.d-head h2 small{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;letter-spacing:.1em;margin-left:8px}
+.d-body{flex:1;overflow-y:auto;padding:8px 20px}
+.d-foot{border-top:1px solid var(--line);padding:16px 20px 20px;display:grid;gap:10px}
+.line{display:grid;grid-template-columns:72px 1fr auto;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:start}
+.line img{width:72px;height:72px;object-fit:cover;border-radius:4px}
+.line b{display:block;font-weight:800;font-stretch:72%;font-size:18px;text-transform:uppercase;line-height:1.05}
+.line small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.line .price{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;text-align:right}
+.qty{display:inline-flex;align-items:center;margin-top:10px;border:1px solid var(--line);border-radius:4px}
+.qty button{width:30px;height:30px;font-size:15px;color:var(--ink)}
+.qty button:hover{color:var(--led)}
+.qty span{min-width:22px;text-align:center;font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
+.rm{display:block;margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-left:auto}
+.rm:hover{color:var(--ink)}
+.sum{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.sum.total{color:var(--ink);font-size:15px;font-weight:600;padding-top:6px;border-top:1px dashed var(--line)}
+.ship-note{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--led);text-transform:uppercase}
+.cta{height:52px;border-radius:4px;background:var(--led);color:#170b02;font-weight:800;font-stretch:80%;font-size:15px;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 0 30px rgba(255,123,28,.3)}
+.cta:disabled{opacity:.6;cursor:progress}
+.ghost{height:44px;border-radius:4px;border:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ghost:hover{color:var(--ink);border-color:rgba(241,236,230,.35)}
+.empty{display:grid;place-items:center;text-align:center;gap:12px;padding:60px 10px;color:var(--muted)}
+.empty b{font-weight:850;font-stretch:66%;font-size:30px;color:var(--ink);text-transform:uppercase}
+.co{display:grid;gap:14px;padding:16px 0}
+.co label{display:grid;gap:6px;min-width:0;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.co input{width:100%;min-width:0;height:44px;padding:0 12px;border-radius:4px;border:1px solid var(--line);background:rgba(241,236,230,.04);color:var(--ink);font:inherit;font-size:14px;text-transform:none;letter-spacing:0}
+.co input:focus{outline:none;border-color:var(--led)}
+.co input[aria-invalid="true"]{border-color:#e5484d}
+.co .row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.co fieldset{border:0;margin:0;padding:0;min-width:0;display:grid;gap:8px}
+.pay{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pay label{display:grid;place-items:center;height:48px;border:1px solid var(--line);border-radius:4px;cursor:pointer;color:var(--ink);font-size:12px;letter-spacing:.08em}
+.pay input{position:absolute;opacity:0;pointer-events:none}
+.pay label:has(input:checked){border-color:var(--led);background:rgba(255,123,28,.12);color:#ffd2b0}
+.pay label:has(input:focus-visible){outline:2px solid var(--led);outline-offset:2px}
+.demo-note{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--muted);text-align:center}
+.done{display:grid;gap:14px;padding:40px 0 10px;text-align:center;justify-items:center}
+.tick{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:rgba(255,123,28,.14);border:1px solid var(--led);color:var(--led);font-size:28px}
+.done b{font-weight:850;font-stretch:66%;font-size:34px;text-transform:uppercase;line-height:.95}
+.done p{color:var(--muted);font-size:14px;line-height:1.5;max-width:32ch}
+.order-no{font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--ink);border:1px dashed var(--line);border-radius:4px;padding:8px 12px}
+
 .toast{position:fixed;left:50%;bottom:24px;z-index:80;transform:translate(-50%,30px);opacity:0;transition:.35s;
   background:#201b19;border:1px solid rgba(255,123,28,.4);border-radius:40px;padding:12px 20px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;white-space:nowrap}
 .toast.show{opacity:1;transform:translate(-50%,0)}
@@ -179,7 +230,7 @@ h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1px rgba(241,236,2
     <a href="#index">Archive</a>
     <a href="#index">Drops</a>
     <a href="#index">Stores</a>
-    <span class="bag">Bag <b id="bagCount">0</b></span>
+    <button class="bag" id="bagBtn" aria-haspopup="dialog" aria-controls="drawer">Bag <b id="bagCount">0</b></button>
   </nav>
 </header>
 
@@ -252,6 +303,13 @@ h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1px rgba(241,236,2
   <span>Free shipping over ₪800 · 30-day returns</span>
 </footer>
 
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle" aria-hidden="true">
+  <div class="d-head"><h2 id="dTitle">Your bag</h2><button class="close" id="dClose" aria-label="Close bag">✕</button></div>
+  <div class="d-body" id="dBody"></div>
+  <div class="d-foot" id="dFoot"></div>
+</aside>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -318,7 +376,7 @@ scene.addEventListener("pointermove", e=>{
 scene.addEventListener("pointerleave", ()=>{ if(!scene.classList.contains("focused") && !busy) cam.style.transform = ""; });
 
 /* Panel */
-let current = -1, size = null, bag = 0, busy = false;
+let current = -1, size = null, busy = false;
 function fill(p){
   $("pTier").textContent = `Tier ${p.id} / 08`;
   $("pName").innerHTML = `${p.name}<br>${p.color}`;
@@ -421,7 +479,7 @@ async function close(){
 }
 
 $("close").addEventListener("click", close);
-addEventListener("keydown", e=>{ if(e.key === "Escape") close(); });
+addEventListener("keydown", e=>{ if(e.key !== "Escape") return; if(bagOpen()) closeBag(); else close(); });
 
 $("sizes").addEventListener("click", e=>{
   const b = e.target.closest("button[data-s]");
@@ -434,11 +492,126 @@ function resetAdd(){ const a=$("add"); a.removeAttribute("data-hint"); a.textCon
 $("add").addEventListener("click", ()=>{
   const a = $("add");
   if(!size){ a.setAttribute("data-hint",""); a.textContent = "Pick a size first"; return; }
-  bag++;
-  const c = $("bagCount"); c.textContent = bag; c.classList.add("pop"); setTimeout(()=>c.classList.remove("pop"),300);
   const p = PAIRS[current];
+  const hit = cart.find(l=>l.id===p.id && l.size===size);
+  if(hit) hit.qty = Math.min(hit.qty+1, 3); else cart.push({id:p.id, size, qty:1});
+  saveCart(); renderCount(true);
   toast(`Added: ${p.name} ${p.color}, EU ${size}`);
+  setTimeout(()=>openBag(), 350);
 });
+
+/* ---------- Bag ---------- */
+const SHIP_FREE = 800, SHIP = 35;
+let cart = [], step = "bag", lastFocus = null;
+try{ cart = JSON.parse(localStorage.getItem("solemn-bag") || "[]").filter(l=>PAIRS.some(p=>p.id===l.id)); }catch(e){ cart = []; }
+function saveCart(){ try{ localStorage.setItem("solemn-bag", JSON.stringify(cart)); }catch(e){} }
+const pairOf = id => PAIRS.find(p=>p.id===id);
+const units = () => cart.reduce((n,l)=>n+l.qty,0);
+const subtotal = () => cart.reduce((n,l)=>n+l.qty*pairOf(l.id).price,0);
+const shipping = () => subtotal() >= SHIP_FREE || !cart.length ? 0 : SHIP;
+function renderCount(pop){
+  const c = $("bagCount"); c.textContent = units();
+  if(pop){ c.classList.add("pop"); setTimeout(()=>c.classList.remove("pop"),300); }
+}
+function totals(){
+  const sub = subtotal(), sh = shipping();
+  const left = SHIP_FREE - sub;
+  return `${left > 0 ? `<p class="ship-note">${fmt(left)} away from free shipping</p>` : `<p class="ship-note">Free shipping unlocked</p>`}
+    <div class="sum"><span>Subtotal</span><span>${fmt(sub)}</span></div>
+    <div class="sum"><span>Shipping</span><span>${sh ? fmt(sh) : "Free"}</span></div>
+    <div class="sum total"><span>Total</span><span>${fmt(sub+sh)}</span></div>`;
+}
+function renderBag(){
+  $("dTitle").innerHTML = step === "done" ? "Thank you" : step === "checkout" ? "Checkout" : `Your bag<small>${units()} item${units()===1?"":"s"}</small>`;
+  const body = $("dBody"), foot = $("dFoot");
+  if(step === "bag"){
+    if(!cart.length){
+      body.innerHTML = `<div class="empty"><b>Your bag is empty</b><span>Pick a pair from the wall to get started.</span></div>`;
+      foot.innerHTML = `<button class="ghost" data-act="close">Back to the wall</button>`;
+      return;
+    }
+    body.innerHTML = cart.map((l,i)=>{ const p = pairOf(l.id); return `
+      <div class="line">
+        <img src="${p.img}" alt="">
+        <div><b>${p.name}</b><small>${p.color} · EU ${l.size}</small>
+          <div class="qty" aria-label="Quantity"><button data-act="dec" data-i="${i}" aria-label="One less">−</button><span>${l.qty}</span><button data-act="inc" data-i="${i}" aria-label="One more">+</button></div></div>
+        <div><div class="price">${fmt(p.price*l.qty)}</div><button class="rm" data-act="rm" data-i="${i}">Remove</button></div>
+      </div>`; }).join("");
+    foot.innerHTML = totals() + `<button class="cta" data-act="checkout">Checkout · ${fmt(subtotal()+shipping())}</button>`;
+  }
+  if(step === "checkout"){
+    body.innerHTML = `<form class="co" id="coForm" novalidate>
+      <label for="coName">Full name<input id="coName" autocomplete="name" required></label>
+      <label for="coEmail">Email<input id="coEmail" type="email" autocomplete="email" required></label>
+      <div class="row2">
+        <label for="coPhone">Phone<input id="coPhone" type="tel" autocomplete="tel" required></label>
+        <label for="coCity">City<input id="coCity" autocomplete="address-level2" required></label>
+      </div>
+      <label for="coAddr">Address<input id="coAddr" autocomplete="street-address" required></label>
+      <fieldset><legend style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Payment</legend>
+        <div class="pay">
+          <label><input type="radio" name="pay" value="Card" checked>Card</label>
+          <label><input type="radio" name="pay" value="Bit">Bit</label>
+          <label><input type="radio" name="pay" value="Apple Pay">Apple Pay</label>
+        </div>
+      </fieldset>
+    </form>`;
+    foot.innerHTML = totals() + `<button class="cta" data-act="pay">Pay ${fmt(subtotal()+shipping())}</button>
+      <button class="ghost" data-act="back">Back to bag</button><p class="demo-note">Demo store · no payment is taken</p>`;
+  }
+  if(step === "done"){
+    const no = "SLM-" + String(Math.floor(1000 + Math.random()*9000));
+    body.innerHTML = `<div class="done"><div class="tick">✓</div><b>Order<br>confirmed</b>
+      <span class="order-no">${no}</span>
+      <p>Your pairs are being checked by hand in Tel Aviv. Delivery in 2 to 4 business days, tracking sent by email.</p></div>`;
+    foot.innerHTML = `<button class="cta" data-act="close">Back to the wall</button>`;
+  }
+}
+function openBag(){
+  lastFocus = document.activeElement;
+  if(step === "done") step = "bag";
+  renderBag();
+  $("scrim").classList.add("open"); $("drawer").classList.add("open"); $("drawer").setAttribute("aria-hidden","false");
+  setTimeout(()=>$("dClose").focus({preventScroll:true}), 60);
+}
+function closeBag(){
+  $("scrim").classList.remove("open"); $("drawer").classList.remove("open"); $("drawer").setAttribute("aria-hidden","true");
+  if(step === "done") step = "bag";
+  if(lastFocus) lastFocus.focus({preventScroll:true});
+}
+const bagOpen = () => $("drawer").classList.contains("open");
+$("bagBtn").addEventListener("click", openBag);
+$("dClose").addEventListener("click", closeBag);
+$("scrim").addEventListener("click", closeBag);
+$("drawer").addEventListener("click", async e=>{
+  const b = e.target.closest("[data-act]"); if(!b) return;
+  const act = b.dataset.act, i = +b.dataset.i;
+  if(act === "inc"){ cart[i].qty = Math.min(cart[i].qty+1, 3); }
+  if(act === "dec"){ cart[i].qty--; if(cart[i].qty < 1) cart.splice(i,1); }
+  if(act === "rm"){ cart.splice(i,1); }
+  if(["inc","dec","rm"].includes(act)){ saveCart(); renderCount(); renderBag(); return; }
+  if(act === "checkout"){
+    step = "checkout"; renderBag();
+    $("coForm").addEventListener("input", ev=>{ if(ev.target.matches("input[required]")) ev.target.removeAttribute("aria-invalid"); });
+    setTimeout(()=>$("coName").focus(), 50); return;
+  }
+  if(act === "back"){ step = "bag"; renderBag(); return; }
+  if(act === "close"){ closeBag(); return; }
+  if(act === "pay"){
+    const f = $("coForm"); let bad = null;
+    f.querySelectorAll("input[required]").forEach(inp=>{
+      const ok = inp.type === "email" ? /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(inp.value.trim()) : inp.value.trim().length > 1;
+      inp.setAttribute("aria-invalid", ok ? "false" : "true");
+      if(!ok && !bad) bad = inp;
+    });
+    if(bad){ bad.focus(); toast("Fill in the highlighted fields"); return; }
+    b.disabled = true; b.textContent = "Processing…";
+    await new Promise(r=>setTimeout(r, 1300));
+    cart = []; saveCart(); renderCount();
+    step = "done"; renderBag();
+  }
+});
+renderCount();
 function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),2200); }
 
 /* Index list */
