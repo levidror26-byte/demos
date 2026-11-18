@@ -226,7 +226,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
   </section>
 
-  <section class="sec" id="soir" data-f="746" data-time="1035" data-night="1">
+  <section class="sec" id="soir" data-f="725" data-time="1035" data-night="1">
     <div class="panel">
       <h2>Le soir, la maison s'allume pièce par pièce.</h2>
       <p>Lumières, volets et chauffage du bassin se pilotent depuis votre téléphone.</p>
@@ -391,7 +391,7 @@ function frame(t){
   const end = anchors[sections.findIndex(s => s.id === 'soir')] || 1e9;
   const extra = clamp((y - end) / (vh * 4), 0, 1);
   const ci = Math.round(cur); for (let k = -6; k <= 10; k++){ const j = ci + k; if (j >= 0 && j < N) want(j); }
-  draw(cur, +(1 + extra * 0.12).toFixed(3));
+  draw(cur, +(1 + extra * 0.04).toFixed(3));
   let ai = 0; for (let i=0;i<sections.length;i++) if (y + vh*0.5 >= sections[i].offsetTop) ai = i;
   dots.forEach((d,i) => d.classList.toggle('on', i === ai));
   const m = Math.round(at(y + vh*0.3, 'time'));
