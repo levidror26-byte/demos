@@ -177,7 +177,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 <div class="clock" id="clockWrap" aria-hidden="true"><span>Césarée</span><time id="clock">16:05</time></div>
 
 <main>
-  <section class="hero" id="hero" data-t="0" data-time="965">
+  <section class="hero" id="hero" data-f="0" data-time="965">
     <p class="wordmark" aria-hidden="true"><span>M</span><span>a</span><span>r</span><span>e</span><span>h</span></p>
     <div class="hero-copy">
       <h1>Des maisons qui regardent la mer.</h1>
@@ -189,7 +189,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
   </section>
 
-  <section class="sec" id="villa" data-t="4" data-time="975">
+  <section class="sec" id="villa" data-f="96" data-time="975">
     <div class="panel">
       <p class="place">Césarée, sur la falaise</p>
       <h2>Villa Ha-Tsuk</h2>
@@ -204,14 +204,14 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
   </section>
 
-  <section class="sec" id="interieur" data-t="10" data-time="985">
+  <section class="sec" id="interieur" data-f="245" data-time="985">
     <div class="panel right">
       <h2>Un salon de huit mètres sous plafond.</h2>
       <p>Sol en travertin, mur de pierre et une seule ligne d'horizon : la mer. Les baies coulissent dans les murs, le salon et la terrasse ne font plus qu'un.</p>
     </div>
   </section>
 
-  <section class="sec" id="cuisine" data-t="15.4" data-time="992">
+  <section class="sec" id="cuisine" data-f="372" data-time="992">
     <div class="panel">
       <h2>La cuisine, au cœur de la maison.</h2>
       <p>Un îlot de quatre mètres en travertin, une cave à vin vitrée et un office caché derrière les façades.</p>
@@ -219,14 +219,14 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
   </section>
 
-  <section class="sec" id="chambre" data-t="21.6" data-time="1000">
+  <section class="sec" id="chambre" data-f="528" data-time="1000">
     <div class="panel right">
       <h2>La suite parentale regarde le couchant.</h2>
       <p>Le lit face à la mer, un dressing, une salle de bain en pierre et un balcon privé au-dessus du bassin.</p>
     </div>
   </section>
 
-  <section class="sec" id="soir" data-t="30.05" data-time="1035" data-night="1">
+  <section class="sec" id="soir" data-f="742" data-time="1035" data-night="1">
     <div class="panel">
       <h2>Le soir, la maison s'allume pièce par pièce.</h2>
       <p>Lumières, volets et chauffage du bassin se pilotent depuis votre téléphone.</p>
@@ -234,7 +234,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
   </section>
 
-  <section class="sec" id="cote" data-t="30.1" data-time="1075" data-night="1">
+  <section class="sec" id="cote" data-f="742" data-time="1075" data-night="1">
     <div class="panel">
       <h2>Quatre maisons sur la côte en ce moment.</h2>
       <p>De Césarée à Herzliya Pituah. Choisissez une ville pour voir la maison.</p>
@@ -243,7 +243,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
   </section>
 
-  <section class="sec visit" id="visite" data-t="30.1" data-time="1085" data-night="1">
+  <section class="sec visit" id="visite" data-f="742" data-time="1085" data-night="1">
     <div class="panel">
       <h2>Visiter une maison</h2>
       <p>Laissez votre numéro, un conseiller francophone vous rappelle dans la journée pour caler la visite.</p>
@@ -313,7 +313,8 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const sections = [...document.querySelectorAll('main > section')];
 const canvas = document.getElementById('tour'), ctx = canvas.getContext('2d');
 const MOBILE = innerWidth <= 760 || matchMedia('(pointer: coarse)').matches;
-const N = 722, FPS = 24, DUR = (N - 1) / FPS;           // 30 s
+const N = 743;
+let CUM = null; // cumulative camera motion per frame: equal scroll = equal movement
 const DEV = MOBILE ? 'm' : 'd';
 const frames = new Array(N); let loadedCount = 0;
 // frames stay compressed in memory; only the ones around the playhead are decoded
@@ -332,6 +333,8 @@ async function loadChunk(c, onFrame){
   }
   lastDrawn = -1;
 }
+function cum(f){ if (!CUM) return f; const i = Math.floor(f), t = f - i; return i >= N - 1 ? CUM[N-1] : CUM[i] + (CUM[i+1] - CUM[i]) * t; }
+function frameAt(c){ if (!CUM) return c; let lo = 0, hi = N - 1; while (hi - lo > 1){ const m = (lo + hi) >> 1; if (CUM[m] <= c) lo = m; else hi = m; } const span = CUM[hi] - CUM[lo] || 1; return lo + (c - CUM[lo]) / span; }
 function nearest(i){ if (ready[i]) return i; for (let d = 1; d < N; d++){ if (ready[i - d]) return i - d; if (ready[i + d]) return i + d; } return -1; }
 
 const prog = $('#progress');
@@ -355,6 +358,12 @@ function at(y, key){
   }
   return +sections[sections.length-1].dataset[key];
 }
+function atMotion(y){ // interpolate in motion space between section anchors
+  const val = i => cum(+sections[i].dataset.f);
+  if (y <= anchors[0]) return val(0);
+  for (let i = 0; i < anchors.length - 1; i++) if (y < anchors[i+1]){ const t = (y - anchors[i]) / (anchors[i+1] - anchors[i] || 1); return lerp(val(i), val(i+1), t); }
+  return val(sections.length - 1);
+}
 function cover(im, alpha, scale){
   const iw = im.naturalWidth || im.width, ih = im.naturalHeight || im.height;
   const s = Math.max(W / iw, H / ih) * scale, w = iw * s, h = ih * s;
@@ -376,7 +385,7 @@ function draw(pos, scale){
 function frame(t){
   if (lenis) lenis.raf(t);
   const y = scrollY;
-  const target = clamp(at(y, 't'), 0, DUR) / DUR * (N - 1);
+  const target = frameAt(atMotion(y));
   cur += (target - cur) * (reduce ? 1 : 0.2);
   if (Math.abs(target - cur) < 0.002) cur = target;
   const end = anchors[sections.findIndex(s => s.id === 'soir')] || 1e9;
@@ -388,7 +397,7 @@ function frame(t){
   const m = Math.round(at(y + vh*0.3, 'time'));
   if (m !== shownMin){ shownMin = m; clockEl.textContent = `${Math.floor(m/60)}:${String(m%60).padStart(2,'0')}`; }
   clockWrap.classList.toggle('hide', sections[ai].id === 'visite');
-  document.body.classList.toggle('night', cur / (N-1) * DUR > 26);
+  document.body.classList.toggle('night', cur > 640);
   requestAnimationFrame(frame);
 }
 // smooth, inertial scrolling on desktop (native scrolling stays on touch screens)
@@ -402,7 +411,8 @@ const bar = document.querySelector('.curtain i');
 const go = () => document.body.classList.add('ready');
 (async () => {
   try {
-    const man = (await (await fetch('frames/manifest.json')).json())[DEV];
+    const all = await (await fetch('frames/manifest.json')).json(); const man = all[DEV];
+    if (all.motion){ CUM = new Float32Array(N); let acc = 0; for (let i = 0; i < N; i++){ CUM[i] = acc; acc += Math.max(all.motion[i] || 0, all.motionFloor); } }
     let n = 0; await loadChunk(man[0], () => bar.style.setProperty('--load', ++n / man[0].frames.length));
     go();
     for (const c of man.slice(1)) await loadChunk(c);
