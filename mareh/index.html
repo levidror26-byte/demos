@@ -204,14 +204,14 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
   </section>
 
-  <section class="sec" id="interieur" data-f="245" data-time="985">
+  <section class="sec" id="interieur" data-f="250" data-time="985">
     <div class="panel right">
       <h2>Un salon de huit mètres sous plafond.</h2>
       <p>Sol en travertin, mur de pierre et une seule ligne d'horizon : la mer. Les baies coulissent dans les murs, le salon et la terrasse ne font plus qu'un.</p>
     </div>
   </section>
 
-  <section class="sec" id="cuisine" data-f="372" data-time="992">
+  <section class="sec" id="cuisine" data-f="385" data-time="992">
     <div class="panel">
       <h2>La cuisine, au cœur de la maison.</h2>
       <p>Un îlot de quatre mètres en travertin, une cave à vin vitrée et un office caché derrière les façades.</p>
@@ -219,14 +219,14 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
   </section>
 
-  <section class="sec" id="chambre" data-f="528" data-time="1000">
+  <section class="sec" id="chambre" data-f="560" data-time="1000">
     <div class="panel right">
       <h2>La suite parentale regarde le couchant.</h2>
       <p>Le lit face à la mer, un dressing, une salle de bain en pierre et un balcon privé au-dessus du bassin.</p>
     </div>
   </section>
 
-  <section class="sec" id="soir" data-f="742" data-time="1035" data-night="1">
+  <section class="sec" id="soir" data-f="746" data-time="1035" data-night="1">
     <div class="panel">
       <h2>Le soir, la maison s'allume pièce par pièce.</h2>
       <p>Lumières, volets et chauffage du bassin se pilotent depuis votre téléphone.</p>
@@ -234,7 +234,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
   </section>
 
-  <section class="sec" id="cote" data-f="742" data-time="1075" data-night="1">
+  <section class="sec" id="cote" data-f="746" data-time="1075" data-night="1">
     <div class="panel">
       <h2>Quatre maisons sur la côte en ce moment.</h2>
       <p>De Césarée à Herzliya Pituah. Choisissez une ville pour voir la maison.</p>
@@ -243,7 +243,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
   </section>
 
-  <section class="sec visit" id="visite" data-f="742" data-time="1085" data-night="1">
+  <section class="sec visit" id="visite" data-f="746" data-time="1085" data-night="1">
     <div class="panel">
       <h2>Visiter une maison</h2>
       <p>Laissez votre numéro, un conseiller francophone vous rappelle dans la journée pour caler la visite.</p>
@@ -313,7 +313,7 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const sections = [...document.querySelectorAll('main > section')];
 const canvas = document.getElementById('tour'), ctx = canvas.getContext('2d');
 const MOBILE = innerWidth <= 760 || matchMedia('(pointer: coarse)').matches;
-const N = 743;
+const N = 747;
 let CUM = null; // cumulative camera motion per frame: equal scroll = equal movement
 const DEV = MOBILE ? 'm' : 'd';
 const frames = new Array(N); let loadedCount = 0;
@@ -397,7 +397,7 @@ function frame(t){
   const m = Math.round(at(y + vh*0.3, 'time'));
   if (m !== shownMin){ shownMin = m; clockEl.textContent = `${Math.floor(m/60)}:${String(m%60).padStart(2,'0')}`; }
   clockWrap.classList.toggle('hide', sections[ai].id === 'visite');
-  document.body.classList.toggle('night', cur > 640);
+  document.body.classList.toggle('night', cur > 690);
   requestAnimationFrame(frame);
 }
 // smooth, inertial scrolling on desktop (native scrolling stays on touch screens)
