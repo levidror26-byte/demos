@@ -313,23 +313,26 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const sections = [...document.querySelectorAll('main > section')];
 const canvas = document.getElementById('tour'), ctx = canvas.getContext('2d');
 const MOBILE = innerWidth <= 760 || matchMedia('(pointer: coarse)').matches;
-const N = 361, FPS = 12, DUR = (N - 1) / FPS;           // 30.1 s
+const N = 722, FPS = 24, DUR = (N - 1) / FPS;           // 30 s
 const DEV = MOBILE ? 'm' : 'd';
 const frames = new Array(N); let loadedCount = 0;
-async function decode(blob){
-  if (window.createImageBitmap){ try { return await createImageBitmap(blob); } catch(e){} }
-  return await new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = URL.createObjectURL(blob); });
+// frames stay compressed in memory; only the ones around the playhead are decoded
+const ready = new Uint8Array(N), asking = new Uint8Array(N);
+function want(i){
+  const im = frames[i]; if (!im || ready[i] || asking[i]) return; asking[i] = 1;
+  (im.decode ? im.decode() : Promise.resolve()).then(() => { ready[i] = 1; lastDrawn = -1; }).catch(() => { ready[i] = 1; });
 }
-// frames are packed in 4 files, coarse to fine: the site can start after the first one
+// frames are packed in a few files, coarse to fine: the site starts after the first one
 async function loadChunk(c, onFrame){
   const buf = await (await fetch(c.file)).arrayBuffer();
   for (const [i, off, len] of c.frames){
-    const bm = await decode(new Blob([buf.slice(off, off + len)], {type: 'image/webp'}));
-    if (bm){ frames[i] = bm; loadedCount++; if (onFrame) onFrame(); }
+    const im = new Image();
+    im.src = URL.createObjectURL(new Blob([buf.slice(off, off + len)], {type: c.type || 'image/avif'}));
+    frames[i] = im; loadedCount++; if (onFrame) onFrame();
   }
   lastDrawn = -1;
 }
-function nearest(i){ if (frames[i]) return i; for (let d = 1; d < N; d++){ if (frames[i - d]) return i - d; if (frames[i + d]) return i + d; } return -1; }
+function nearest(i){ if (ready[i]) return i; for (let d = 1; d < N; d++){ if (ready[i - d]) return i - d; if (ready[i + d]) return i + d; } return -1; }
 
 const prog = $('#progress');
 sections.forEach(s => { const li = document.createElement('li'); li.innerHTML = `<a href="#${s.id}" tabindex="-1"></a>`; prog.appendChild(li); });
@@ -353,7 +356,8 @@ function at(y, key){
   return +sections[sections.length-1].dataset[key];
 }
 function cover(im, alpha, scale){
-  const s = Math.max(W / im.width, H / im.height) * scale, w = im.width * s, h = im.height * s;
+  const iw = im.naturalWidth || im.width, ih = im.naturalHeight || im.height;
+  const s = Math.max(W / iw, H / ih) * scale, w = iw * s, h = ih * s;
   ctx.globalAlpha = alpha; ctx.drawImage(im, (W - w) / 2, (H - h) * 0.55, w, h);
 }
 let cur = 0, lastDrawn = -1;
@@ -366,7 +370,7 @@ function draw(pos, scale){
   if (key === lastDrawn) return; lastDrawn = key;
   cover(frames[a], 1, scale);
   // blend toward the next frame for in-between scroll positions (smoother than 12 fps)
-  if (a === i && f > 0.02 && frames[i + 1]) cover(frames[i + 1], f, scale);
+  if (a === i && f > 0.02 && ready[i + 1]) cover(frames[i + 1], f, scale);
   ctx.globalAlpha = 1;
 }
 function frame(t){
@@ -377,6 +381,7 @@ function frame(t){
   if (Math.abs(target - cur) < 0.002) cur = target;
   const end = anchors[sections.findIndex(s => s.id === 'soir')] || 1e9;
   const extra = clamp((y - end) / (vh * 4), 0, 1);
+  const ci = Math.round(cur); for (let k = -6; k <= 10; k++){ const j = ci + k; if (j >= 0 && j < N) want(j); }
   draw(cur, +(1 + extra * 0.12).toFixed(3));
   let ai = 0; for (let i=0;i<sections.length;i++) if (y + vh*0.5 >= sections[i].offsetTop) ai = i;
   dots.forEach((d,i) => d.classList.toggle('on', i === ai));
