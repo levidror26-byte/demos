@@ -41,7 +41,7 @@ img,video{display:block;max-width:100%}
 /* The scene */
 .scene{position:relative;background:#000;isolation:isolate;overflow:hidden}
 .stage{position:relative;width:100%;aspect-ratio:16/9;max-height:100svh;overflow:hidden}
-.cam{position:absolute;inset:0;transition:transform 1.1s var(--ease);will-change:transform}
+.cam{position:absolute;inset:0;transition:transform .75s var(--ease);will-change:transform}
 .cam img{width:100%;height:100%;object-fit:cover}
 .scene video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;z-index:1;transition:transform .5s var(--ease)}
 .scene video.on{opacity:1}
@@ -390,6 +390,8 @@ function fill(p){
 }
 
 const wait = ms => new Promise(r=>setTimeout(r, ms));
+const IN_RATE = 2;      /* push-in speed: 4 s clip plays in 2 s */
+const OUT_RATE = 1.4;   /* pull-back speed */
 const once = (el, ev) => new Promise(r=>el.addEventListener(ev, r, {once:true}));
 /* resolves once the video has actually painted a frame */
 function firstFrame(v){
@@ -411,10 +413,10 @@ function playToMid(v){
     const hold = half - 1/24;              /* last frame of the push-in */
     const stop = ()=>{ v.pause(); v.currentTime = hold; once(v, "seeked").then(res); };
     if(v.requestVideoFrameCallback){
-      const tick = (now, meta)=>{ if(meta.mediaTime >= half - 0.3) stop(); else v.requestVideoFrameCallback(tick); };
+      const tick = (now, meta)=>{ if(meta.mediaTime >= half - 0.5) stop(); else v.requestVideoFrameCallback(tick); };
       v.requestVideoFrameCallback(tick);
     } else {
-      const t = setInterval(()=>{ if(v.currentTime >= half - 0.3){ clearInterval(t); stop(); } }, 15);
+      const t = setInterval(()=>{ if(v.currentTime >= half - 0.5){ clearInterval(t); stop(); } }, 15);
     }
   });
 }
@@ -432,6 +434,7 @@ async function open(i){
     const v = p.el;
     await rewind(v);
     const ff = firstFrame(v), mid = playToMid(v);
+    v.playbackRate = IN_RATE;
     try{
       await v.play();
       await ff;
@@ -445,7 +448,7 @@ async function open(i){
     const tx = innerWidth > 820 ? 34 : 50;
     cam.style.transformOrigin = `${cx}% ${cy}%`;
     cam.style.transform = `translate(${tx-cx}%, ${50-cy}%) scale(2.6)`;
-    await wait(reduce ? 0 : 1100);
+    await wait(reduce ? 0 : 750);
   }
   p.usedVideo = played;
   scene.classList.remove("busy");
@@ -464,6 +467,7 @@ async function close(){
     const v = p.el;
     await wait(innerWidth > 820 ? 500 : 0);   /* shoe slides back to centre while the panel leaves */
     const ended = once(v, "ended");
+    v.playbackRate = OUT_RATE;
     try{ await v.play(); await ended; }catch(e){}   /* same clip carries on: camera pulls back to the wall */
     v.classList.add("fade");
     v.classList.remove("on");
