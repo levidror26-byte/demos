@@ -71,7 +71,7 @@ html[lang=he] .label.he-tight{letter-spacing:.12em}
 /* ===== HEADER ===== */
 header{position:fixed;top:0;inset-inline:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px var(--pad);transition:background .4s,padding .4s,backdrop-filter .4s}
 header.solid{background:rgba(11,11,12,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding-top:12px;padding-bottom:12px;border-bottom:1px solid var(--line)}
-.h-logo{font-family:var(--serif-lat);font-size:30px;letter-spacing:.08em;font-weight:500;line-height:1;direction:ltr}
+.h-logo{font-family:var(--serif-lat);font-size:30px;letter-spacing:.08em;font-weight:500;line-height:1}
 .h-logo small{display:block;font-size:10px;letter-spacing:.3em;color:var(--grey);font-family:var(--sans);margin-top:3px;text-transform:uppercase}
 nav.main{display:flex;gap:34px;font-size:14px;letter-spacing:.06em}
 nav.main a{position:relative;padding:6px 0;color:rgba(242,241,238,.8);transition:color .3s}
@@ -103,7 +103,7 @@ html[dir=rtl] .wordmark{justify-content:flex-end}
 .ready .wordmark .L::after{animation:glint 1.3s 1.4s ease-in-out forwards}
 @keyframes glint{0%{left:-60%;opacity:1}100%{left:140%;opacity:1}}
 .hero-sub{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:28px;margin-top:22px}
-.tagline{font-family:var(--serif-lat);font-style:italic;font-size:clamp(22px,2.4vw,32px);color:var(--paper);direction:ltr;letter-spacing:.02em}
+.tagline{font-family:var(--serif-lat);font-style:italic;font-size:clamp(22px,2.4vw,32px);color:var(--paper);unicode-bidi:isolate;letter-spacing:.02em}
 .hero h1{font-size:clamp(30px,4.2vw,58px);line-height:1.08;max-width:14ch;margin-top:6px}
 .hero p.lead{max-width:44ch;color:rgba(242,241,238,.72);margin-top:14px;font-size:clamp(15px,1.2vw,17px)}
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
@@ -232,8 +232,8 @@ section{position:relative}
 /* ===== REVIEWS ===== */
 .reviews{padding:0 var(--pad);text-align:center}
 .reviews .s-head{justify-content:center;text-align:center;flex-direction:column;align-items:center}
-.rv-wrap{position:relative;max-width:900px;margin:0 auto;min-height:320px}
-.rv{position:absolute;inset:0;opacity:0;transform:translateY(14px);transition:opacity .9s,transform .9s;pointer-events:none}
+.rv-wrap{position:relative;max-width:900px;margin:0 auto;display:grid}
+.rv{grid-area:1/1;opacity:0;transform:translateY(14px);transition:opacity .9s,transform .9s;pointer-events:none}
 .rv.on{opacity:1;transform:none;pointer-events:auto}
 .rv blockquote{font-size:clamp(24px,3vw,40px);line-height:1.35}
 .rv .who{margin-top:26px;color:var(--grey);font-size:14px;letter-spacing:.1em}
